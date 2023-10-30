@@ -1,7 +1,6 @@
 # créer un repo GIT pour faire mes tests
 # réparer les bug générer en créant la class Armee
 
-""" MEGA TEST DE REPO GIT"""
 
 class Unite:
     def __init__(self, name, value, nb):
@@ -10,95 +9,53 @@ class Unite:
         self.nb = nb
 
 
-class Armee:
-    def __init__(self, name):
-        self.name = name
+"""
+Il va y avoir 2 armées qui reprenne certaines fonctions:
+- les 2 armées auront un nom,               OK !
+- elles calculent leurs score total,        OK !
+- elles affichent leur score total,         OK !
+- elles affichent les pions dans l'armée    OK !
 
-    def InitialiserCampOrdi(self):
-        for j in range(len(unites)):
-            for i in range(0, unites[j].nb):
-                camp_ordi.append(unites[i].name)
+"""
+class Armee:
+    def __init__(self, name, pions):
+        self.name = name
+        self.pions = pions
+        """self.hero = hero
+        self.captain = captain
+        self.soldier = soldier"""
 
     def CalculerValeurTotal(self):
         tt = 0
-        for i in range(len(unites)):
-            tt += unites[i].nb * unites[i].value
+        for i in range(len(self.pions)):
+            tt += self.pions[i].nb * self.pions[i].value
         return tt
 
-    def AfficherCampInitial(self):
+    def AfficherPionsDansArmee(self):
         txt = ""
-        for i in range(len(unites)):
-            if unites[i].nb == 0:
+        for i in range(len(self.pions)):
+            if self.pions[i].nb == 0:
                 continue
-            texte_descrition = unites[i].nb * (unites[i].name + ":" + str(unites[i].value) + " ")
+            texte_descrition = self.pions[i].nb * (self.pions[i].name + ":" + str(self.pions[i].value) + " ")
             txt += texte_descrition
         return txt
 
 
+# Entités des pions
 hero = Unite("Héro", 3, 3)
 captain = Unite("Capitaine", 2, 3)
 soldier = Unite("Soldat", 1, 1)
-armee_ordi = Armee("Armée initial")
 
-armee_ordi.InitialiserCampOrdi()
+# Entités des camps
+armee_ordi = Armee("Armée de l'ordi:", [hero, captain, soldier])
+armee_joueur = Armee("Armée du joueur:", [])
 
-unites = [hero, captain, soldier]
-camp_ordi = []
-camp_joueur = []
+# lancement des méthodes
+score_tt_ordi = armee_ordi.CalculerValeurTotal()
+description_pions_ordi = armee_ordi.AfficherPionsDansArmee()
+score_tt_joueurs = armee_joueur.CalculerValeurTotal()
+description_pions_joueur = armee_joueur.AfficherPionsDansArmee()
 
-
-
-'''initialiser_camp_ordi(unites)
-
-print(afficher_camp_initial(unites))
-valeur_tt_camp_init = calculer_valeur_total(unites)'''
-print("la valeur total :", valeur_tt_camp_init)
-print("la valeur du joueur :", sum(camp_joueur))
-print("l'ordi", len(camp_ordi))
-print("joueur", len(camp_joueur))
-
-
-
-
-
-
-#fonctionnalité du jeu
-def interchanger_les_listes(l1, l2, rep_joueur):
-    l2.append(l1[int(rep_joueur)])
-    del l1[int(rep_joueur)]
-#interchanger_les_listes(camp_ordi, camp_joueur, "1")
-
-
-
-
-
-
-
-
-
-
-
-'''#pour créer le camp de l'ordi
-def initialiser_camp_ordi(uni):
-    for j in range(len(uni)):
-        for i in range(0, uni[j].nb):
-            camp_ordi.append(uni[i].name)
-
-
-#pour calculer le 16
-def calculer_valeur_total(uni):
-    tt = 0
-    for i in range(len(uni)):
-        tt += uni[i].nb * uni[i].value
-    return tt
-
-
-#pour afficher: Héro:3 Héro:3 Capitaine:2 ...
-def afficher_camp_initial(unites):
-    txt = ""
-    for i in range(len(unites)):
-        if unites[i].nb == 0:
-            continue
-        texte_descrition = unites[i].nb * (unites[i].name + ":" + str(unites[i].value) + " ")
-        txt += texte_descrition
-    return txt'''
+# ce qui s'affichera sur le terminal:
+print(armee_ordi.name, score_tt_ordi, description_pions_ordi)
+print(armee_joueur.name, score_tt_joueurs, description_pions_joueur)
