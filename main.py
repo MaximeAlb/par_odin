@@ -1,6 +1,7 @@
 # créer un repo GIT pour faire mes tests
 # réparer les bug générer en créant la class Armee
 
+"OK test push repo"
 
 class Unite:
     def __init__(self, name, value, nb):
