@@ -21,11 +21,11 @@ Il va y avoir 2 armées qui reprenne certaines fonctions:
 class Armee:
 
     def __init__(self, name, pions):
-        self.LISTE_NAME_PIONS = []
+        self.LISTE_PIONS = []
         self.liste_valeurs = []
         self.name = name
         self.pions = pions
-        self.dico_pions = {}
+
 
     def AfficherPionsDansArmee(self):
         txt = ""
@@ -36,19 +36,18 @@ class Armee:
             txt += texte_descrition
         return txt
 
-    def CreationListeNamePion(self):
+    def CreationListePion(self):
         if len(self.pions) == 0:
             for i in range(0, 7):
-                self.LISTE_NAME_PIONS.append("     ")
+                self.LISTE_PIONS.append("     ")
         for pion in self.pions:
             for i in range(pion.nb):
-                self.LISTE_NAME_PIONS.append(pion.name)
-                self.dico_pions = {pion: [pion.nb, pion.value]}
-        return self.LISTE_NAME_PIONS, self.dico_pions
+                self.LISTE_PIONS.append(pion.name)
+        return self.LISTE_PIONS
 
     def CreationListeValeursDesPions(self):
         for pion in self.pions:
-            for i in range(0, pion.nb):
+            for i in range(pion.nb):
                 self.liste_valeurs.append(pion.value)
         return self.liste_valeurs
 
@@ -75,20 +74,21 @@ armee_ordi = Armee("Armée de l'ordi:", [hero, captain, soldier])
 armee_joueur = Armee("Armée du joueur:", [])
 
 # variables
-liste_pions_armee_ordi = armee_ordi.CreationListeNamePion()
-liste_pions_armee_joueur = armee_joueur.CreationListeNamePion()
+liste_pions_armee_ordi = armee_ordi.CreationListePion()
+liste_pions_armee_joueur = armee_joueur.CreationListePion()
 
 # lancement des méthodes
-score_tt_ordi = armee_ordi.CreationListeValeursDesPions()
+score_tt_ordi = CalculerValeurTotal(armee_ordi.CreationListeValeursDesPions())
 description_pions_ordi = armee_ordi.AfficherPionsDansArmee()
-score_tt_joueurs = armee_joueur.CreationListeValeursDesPions()
+score_tt_joueurs = CalculerValeurTotal(armee_joueur.CreationListeValeursDesPions())
 description_pions_joueur = armee_joueur.AfficherPionsDansArmee()
 
 # ce qui s'affichera sur le terminal:
-print(armee_ordi.name, sum(score_tt_ordi), description_pions_ordi)
-print(armee_joueur.name, sum(score_tt_joueurs), description_pions_joueur)
+print(armee_ordi.name, score_tt_ordi, description_pions_ordi)
+print(armee_joueur.name, score_tt_joueurs, description_pions_joueur)
 
 # ce qui ne s'affiche pas mais que je souhaite voir pour visualiser
+print(armee_joueur.CreationListeValeursDesPions())
 print(liste_pions_armee_ordi)
 print(liste_pions_armee_joueur)
 
@@ -97,13 +97,8 @@ while True:
     print()
     retour_joueur = input("entre un nombre du pav num: ")
     transfert_pion_armee(liste_pions_armee_ordi, liste_pions_armee_joueur, retour_joueur)
-
-    print(armee_ordi.name, sum(score_tt_ordi), description_pions_ordi)
-    print(armee_joueur.name, sum(score_tt_joueurs), description_pions_joueur)
-
-    print(sum(score_tt_ordi), liste_pions_armee_ordi)
-    print(sum(score_tt_joueurs), liste_pions_armee_joueur)
+    print(CalculerValeurTotal(armee_ordi.CreationListeValeursDesPions()), liste_pions_armee_ordi)
+    print(CalculerValeurTotal(armee_joueur.CreationListeValeursDesPions()), liste_pions_armee_joueur)
     print(armee_joueur.CreationListeValeursDesPions())
-
     if retour_joueur == str(0):
         break
