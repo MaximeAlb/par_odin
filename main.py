@@ -4,16 +4,15 @@
 "Enfin le git push et pull fonctionnent !"
 
 class Unite:
-    def __init__(self, name, value, nb):
+    def __init__(self, name, val):
         self.name = name
-        self.value = value
-        self.nb = nb
+        self.val = val
 
 
 """
 Il va y avoir 2 armées qui reprenne certaines fonctions:
 - les 2 armées auront un nom,               OK !
-- elles calculent leurs score total,        
+- elles calculent leurs score total,        OK !
 - elles affichent leur score total,         OK !
 - elles affichent les pions dans l'armée    OK !
 
@@ -21,57 +20,57 @@ Il va y avoir 2 armées qui reprenne certaines fonctions:
 class Armee:
 
     def __init__(self, name, pions):
-        self.LISTE_NAME_PIONS = []
-        self.liste_valeurs = []
+        self.LISTE_PIONS = []
         self.name = name
         self.pions = pions
-        self.dico_pions = {}
+        self.tt = 0
+        self.dico = {}
+
+    def CreationDicoPions(self):
+        for pion in self.pions:
+            self.dico[pion.name] = pion.val
+        return self.dico
 
     def AfficherPionsDansArmee(self):
         txt = ""
-        for i in range(len(self.pions)):
-            if self.pions[i].nb == 0:
+        for pion in self.pions:
+            if len(self.pions) == 0:
+                txt = "VIDE"
                 continue
-            texte_descrition = self.pions[i].nb * (self.pions[i].name + ":" + str(self.pions[i].value) + " ")
+            texte_descrition = pion.name + ":" + str(pion.val) + ", "
             txt += texte_descrition
         return txt
 
     def CreationListeNamePion(self):
         if len(self.pions) == 0:
             for i in range(0, 7):
-                self.LISTE_NAME_PIONS.append("     ")
+                self.LISTE_PIONS.append(vide.name)
         for pion in self.pions:
-            for i in range(pion.nb):
-                self.LISTE_NAME_PIONS.append(pion.name)
-                self.dico_pions = {pion: [pion.nb, pion.value]}
-        return self.LISTE_NAME_PIONS, self.dico_pions
-
-    def CreationListeValeursDesPions(self):
-        for pion in self.pions:
-            for i in range(0, pion.nb):
-                self.liste_valeurs.append(pion.value)
-        return self.liste_valeurs
-
-
+            self.LISTE_PIONS.append(pion.name)
+        return self.LISTE_PIONS
 
 def transfert_pion_armee(lo, lj, rep_pj):
     lo[int(rep_pj) - 1], lj[int(rep_pj) - 1] = lj[int(rep_pj) - 1], lo[int(rep_pj) - 1]
 
 
-def CalculerValeurTotal(l):
+def calcul_pts(l, dico):
     tt = 0
-    for valeur in l:
-        tt += valeur
+    for e in l:
+        if e == "Vide":
+            continue
+        tt += dico[e]
     return tt
 
 
+
 # Entités des pions
-hero = Unite("Héro", 3, 3)
-captain = Unite("Capitaine", 2, 3)
-soldier = Unite("Soldat", 1, 1)
+vide = Unite("Vide", 0)
+hero = Unite("Héro", 3)
+captain = Unite("Capitaine", 2)
+soldier = Unite("Soldat", 1)
 
 # Entités des camps
-armee_ordi = Armee("Armée de l'ordi:", [hero, captain, soldier])
+armee_ordi = Armee("Armée de l'ordi:", [hero, hero, hero, captain, captain, captain, soldier])
 armee_joueur = Armee("Armée du joueur:", [])
 
 # variables
@@ -79,31 +78,26 @@ liste_pions_armee_ordi = armee_ordi.CreationListeNamePion()
 liste_pions_armee_joueur = armee_joueur.CreationListeNamePion()
 
 # lancement des méthodes
-score_tt_ordi = armee_ordi.CreationListeValeursDesPions()
+creat_dico_pions_ordi = armee_ordi.CreationDicoPions()
 description_pions_ordi = armee_ordi.AfficherPionsDansArmee()
-score_tt_joueurs = armee_joueur.CreationListeValeursDesPions()
+creat_dico_pions_pj = armee_ordi.CreationDicoPions()
 description_pions_joueur = armee_joueur.AfficherPionsDansArmee()
 
 # ce qui s'affichera sur le terminal:
-print(armee_ordi.name, sum(score_tt_ordi), description_pions_ordi)
-print(armee_joueur.name, sum(score_tt_joueurs), description_pions_joueur)
+print(armee_ordi.name, description_pions_ordi)
+print(armee_joueur.name, description_pions_joueur)
 
 # ce qui ne s'affiche pas mais que je souhaite voir pour visualiser
-print(liste_pions_armee_ordi)
-print(liste_pions_armee_joueur)
+print("création du dico ordi", creat_dico_pions_ordi)
+print("création du dico pj", creat_dico_pions_pj)
+print("création de la l ordi", liste_pions_armee_ordi)
+print("création de la l pj", liste_pions_armee_joueur)
 
 # lancement boucle infini du jeu
 while True:
-    print()
+    print(calcul_pts(liste_pions_armee_ordi, creat_dico_pions_ordi))
+    print(calcul_pts(liste_pions_armee_joueur, creat_dico_pions_pj))
     retour_joueur = input("entre un nombre du pav num: ")
     transfert_pion_armee(liste_pions_armee_ordi, liste_pions_armee_joueur, retour_joueur)
-
-    print(armee_ordi.name, sum(score_tt_ordi), description_pions_ordi)
-    print(armee_joueur.name, sum(score_tt_joueurs), description_pions_joueur)
-
-    print(sum(score_tt_ordi), liste_pions_armee_ordi)
-    print(sum(score_tt_joueurs), liste_pions_armee_joueur)
-    print(armee_joueur.CreationListeValeursDesPions())
-
     if retour_joueur == str(0):
         break
